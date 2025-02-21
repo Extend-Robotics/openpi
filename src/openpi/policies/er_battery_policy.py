@@ -11,7 +11,7 @@ from openpi import transforms
 def make_aloha_example() -> dict:
     """Creates a random input example for the ER policy."""
     return {
-        "state": np.ones((12,)),
+        "state": np.ones((7,)),
         "images": {
             "cam_base": np.random.randint(256, size=(3, 480, 640), dtype=np.uint8),
             "cam_wrist": np.random.randint(256, size=(3, 480, 640), dtype=np.uint8),
@@ -26,8 +26,8 @@ class ERInputs(transforms.DataTransformFn):
 
     Expected inputs:
     - images: dict[name, img] where img is [channel, height, width]. name must be in EXPECTED_CAMERAS.
-    - state: [12]
-    - actions: [action_horizon, 12]
+    - state: [7]
+    - actions: [action_horizon, 7]
     """
 
     # The action dimension of the model. Will be used to pad state and actions.
@@ -44,7 +44,7 @@ class ERInputs(transforms.DataTransformFn):
     def __call__(self, data: dict) -> dict:
         data = _decode_aloha(data, adapt_to_pi=self.adapt_to_pi)
 
-        # Get the state. We are padding from 12 to the model action dim.
+        # Get the state. We are padding from 7 to the model action dim.
         state = transforms.pad_to_dim(data["state"], self.action_dim)
 
         in_images = data["images"]
@@ -102,11 +102,7 @@ class EROutputs(transforms.DataTransformFn):
 
     def __call__(self, data: dict) -> dict:
         # Only return the first 14 dims.
-<<<<<<< HEAD
         actions = np.asarray(data["actions"][:, :11])
-=======
-        actions = np.asarray(data["actions"][:, :12])
->>>>>>> 02902e147feaf3cef0c0e575a61a76462358f921
         return {"actions": actions}
 
 def _decode_aloha(data: dict, *, adapt_to_pi: bool = False) -> dict:
