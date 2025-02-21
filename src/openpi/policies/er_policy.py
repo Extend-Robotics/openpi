@@ -63,7 +63,8 @@ class ERInputs(transforms.DataTransformFn):
 
         # Add the extra images.
         extra_image_names = {
-            "wrist_0_rgb": "cam_wrist",
+            "left_wrist_0_rgb": "cam_wrist",
+            "right_wrist_0_rgb": "cam_right_wrist"
         }
         for dest, source in extra_image_names.items():
             if source in in_images:
@@ -101,7 +102,7 @@ class EROutputs(transforms.DataTransformFn):
 
     def __call__(self, data: dict) -> dict:
         # Only return the first 14 dims.
-        actions = np.asarray(data["actions"][:, :11])
+        actions = np.asarray(data["actions"][:, :12])
         return {"actions": actions}
 
 def _decode_aloha(data: dict, *, adapt_to_pi: bool = False) -> dict:
