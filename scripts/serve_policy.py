@@ -19,6 +19,8 @@ class EnvMode(enum.Enum):
     DROID = "droid"
     LIBERO = "libero"
     ER = "er"
+    ER_Battery = "er_battery"
+    ER_IsaacSim = "er_isaacsim"
 
 
 @dataclasses.dataclass
@@ -41,7 +43,7 @@ class Args:
     """Arguments for the serve_policy script."""
 
     # Environment to serve the policy for. This is only used when serving default policies.
-    env: EnvMode = EnvMode.ER
+    env: EnvMode = EnvMode.ER_IsaacSim
 
     # If provided, will be used in case the "prompt" key is not present in the data, or if the model doesn't have a default
     # prompt.
@@ -74,9 +76,17 @@ DEFAULT_CHECKPOINT: dict[EnvMode, Checkpoint] = {
         config="pi0_fast_libero",
         dir="s3://openpi-assets/checkpoints/pi0_fast_libero",
     ),
-        EnvMode.ER: Checkpoint(
+    EnvMode.ER: Checkpoint(
         config="pi0_er",
         dir="s3://openpi-assets/checkpoints/pi0_er",
+    ),
+    EnvMode.ER_Battery: Checkpoint(
+        config="pi0_er_battery",
+        dir="s3://openpi-assets/checkpoints/pi0_er_battery",
+    ),
+    EnvMode.ER_IsaacSim: Checkpoint(
+        config="pi0_er_sim",
+        dir="s3://openpi-assets/checkpoints/pi0_isaacsim",
     ),
 }
 
