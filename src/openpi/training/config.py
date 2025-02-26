@@ -650,7 +650,7 @@ _CONFIGS = [
         name="pi0_er_sim",
         model=pi0.Pi0Config(paligemma_variant="gemma_2b_lora", action_expert_variant="gemma_300m_lora"),
         data=LeRobotERSimDataConfig(
-            repo_id="lerobot/er_battery",
+            repo_id="lerobot/er_sim",
             default_prompt="Pick and place object",
             use_delta_joint_actions=False,
         ),
